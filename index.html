@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks Display</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 3s linear;
+        }
+        @keyframes explode {
+            0% { opacity: 1; transform: scale(0); }
+            100% { opacity: 0; transform: scale(10); }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const colors = [
+            ['red', 'yellow'],
+            ['blue', 'green'],
+            ['purple', 'pink']
+        ];
+
+        function createFirework(x, y, color) {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.backgroundColor = color;
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+            document.body.appendChild(firework);
+
+            firework.addEventListener('animationend', () => {
+                firework.remove();
+            });
+        }
+
+        function launchFireworks() {
+            let round = 0;
+            const interval = setInterval(() => {
+                if (round >= colors.length) {
+                    clearInterval(interval);
+                    return;
+                }
+                for (let i = 0; i < 10; i++) {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    const color = colors[round][Math.floor(Math.random() * 2)];
+                    createFirework(x, y, color);
+                }
+                round++;
+            }, 3000);
+        }
+
+        launchFireworks();
+    </script>
+</body>
+</html>
